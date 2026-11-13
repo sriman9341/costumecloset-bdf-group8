@@ -1,11 +1,12 @@
 {
-  "name": "costume-closet",
+  "name": "costumecloset-bdf-group8",
   "version": "1.0.0",
   "description": "CostumeCloset – Theatre Costume Hire Management System",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test/test-server.js"
+    "test": "node test/test-server.js",
+    "test-db": "node test-db.js"
   },
   "keywords": [
     "express",
@@ -13,7 +14,7 @@
     "theatre",
     "costume-closet"
   ],
-  "author": "B. Uday Sai Sriman (Team Lead - BDF Group 8)",
+  "author": "BDF Group 8",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
