@@ -1,0 +1,23 @@
+{
+  "name": "costume-closet",
+  "version": "1.0.0",
+  "description": "CostumeCloset – Theatre Costume Hire Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/test-server.js"
+  },
+  "keywords": [
+    "express",
+    "sqlite3",
+    "theatre",
+    "costume-closet"
+  ],
+  "author": "B. Uday Sai Sriman (Team Lead - BDF Group 8)",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "express": "^5.3.0",
+    "sqlite3": "^6.0.1"
+  }
+}
