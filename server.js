@@ -7,6 +7,7 @@
 
 const express = require('express');
 const actorRoutes = require('./routes/actorRoutes');
+const hireRoutes = require('./routes/hireRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -28,6 +29,10 @@ app.get('/', (req, res) => {
 
 // Register Actors API routes
 app.use('/actors', actorRoutes);
+
+// Register Hire Management & Return API routes
+app.use('/hires', hireRoutes);
+app.use('/api/hires', hireRoutes);
 
 // 404 Handler for undefined routes
 app.use((req, res, next) => {

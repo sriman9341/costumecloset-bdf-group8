@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "test": "node test/test-server.js",
+    "test": "node test/test-server.js && node test/test-hires.js",
+    "test:server": "node test/test-server.js",
+    "test:hires": "node test/test-hires.js",
     "test-db": "node test-db.js"
   },
   "keywords": [
