@@ -1,4 +1,5 @@
 node_modules/
-costumes.db
 *.db
+*.log
 .env
+data/

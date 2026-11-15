@@ -1,19 +1,29 @@
+
 {
   "name": "costumecloset-bdf-group8",
   "version": "1.0.0",
-  "description": "CostumeCloset is a theatre costume hire management system developed using Node.js, Express.js, and SQLite as part of the Backend Development Fundamentals (BDF) Group Assignment. It manages actors, costumes, and hire records with CRUD operations, input validation, search functionality, and a no-double-booking rule.",
-  "main": "index.js",
+  "description": "CostumeCloset – Theatre Costume Hire Management System",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "test": "node test/test-server.js && node test/test-hires.js",
+    "test:server": "node test/test-server.js",
+    "test:hires": "node test/test-hires.js",
+    "test-db": "node test-db.js"
   },
+  "keywords": [
+    "express",
+    "sqlite3",
+    "theatre",
+    "costume-closet"
+  ],
+  "author": "BDF Group 8",
+  "license": "ISC",
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sriman9341/costumecloset-bdf-group8.git"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/sriman9341/costumecloset-bdf-group8/issues"
   },

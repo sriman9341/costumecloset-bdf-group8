@@ -1,0 +1,252 @@
+{
+  "info": {
+    "_postman_id": "c61b20f1-4df2-4786-8a9d-598d1a12e2f3",
+    "name": "CostumeCloset - Hire Management & Double Booking Prevention",
+    "description": "Postman test collection for CostumeCloset - Theatre Costume Hire Management System.\nRole: Hire Management & Double Booking Prevention Developer (B. Nikshith Goud)\nBranch: feature/double-booking",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "costumeId",
+      "value": "15",
+      "type": "string"
+    },
+    {
+      "key": "hireId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Hire Costume 15 for Asha",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"HTTP 201 for successful hire\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Hire record saved with status active for Asha\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.message).to.eql(\"Costume hired successfully\");",
+              "    pm.expect(jsonData.hire.costumeId).to.eql(Number(pm.collectionVariables.get(\"costumeId\")));",
+              "    pm.expect(jsonData.hire.actorName).to.eql(\"Asha\");",
+              "    pm.expect(jsonData.hire.status).to.eql(\"active\");",
+              "    pm.expect(jsonData.hire.id).to.be.a(\"number\");",
+              "    pm.collectionVariables.set(\"hireId\", jsonData.hire.id.toString());",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"costumeId\": {{costumeId}},\n  \"actorName\": \"Asha\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/hires",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "hires"
+          ]
+        },
+        "description": "Actor Asha hires Costume 15. Expects HTTP 201 Created."
+      },
+      "response": []
+    },
+    {
+      "name": "2. Hire Costume 15 for Ravi (Duplicate Attempt - 409 Conflict)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"HTTP 409 for duplicate hire\", function () {",
+              "    pm.response.to.have.status(409);",
+              "});",
+              "",
+              "pm.test(\"Exact duplicate error message: Costume 15 is already hired\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.error).to.eql(\"Costume 15 is already hired\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"costumeId\": {{costumeId}},\n  \"actorName\": \"Ravi\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/hires",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "hires"
+          ]
+        },
+        "description": "Actor Ravi attempts to hire Costume 15 while Asha still has it actively hired. Expects HTTP 409 Conflict."
+      },
+      "response": []
+    },
+    {
+      "name": "3. Return Costume 15",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"HTTP 200 for successful return\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Costume returned successfully and status updated to returned\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.message).to.eql(\"Costume returned successfully\");",
+              "    pm.expect(jsonData.hire.costumeId).to.eql(Number(pm.collectionVariables.get(\"costumeId\")));",
+              "    pm.expect(jsonData.hire.actorName).to.eql(\"Asha\");",
+              "    pm.expect(jsonData.hire.status).to.eql(\"returned\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "PATCH",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/hires/{{hireId}}/return",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "hires",
+            "{{hireId}}",
+            "return"
+          ]
+        },
+        "description": "Return Asha's active hire for Costume 15. Expects HTTP 200 OK."
+      },
+      "response": []
+    },
+    {
+      "name": "4. Hire Costume 15 for Ravi after return",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"HTTP 201 for hiring after return\", function () {",
+              "    pm.response.to.have.status(201);",
+              "});",
+              "",
+              "pm.test(\"Ravi successfully hires Costume 15 with status active\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.message).to.eql(\"Costume hired successfully\");",
+              "    pm.expect(jsonData.hire.costumeId).to.eql(Number(pm.collectionVariables.get(\"costumeId\")));",
+              "    pm.expect(jsonData.hire.actorName).to.eql(\"Ravi\");",
+              "    pm.expect(jsonData.hire.status).to.eql(\"active\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"costumeId\": {{costumeId}},\n  \"actorName\": \"Ravi\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/hires",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "hires"
+          ]
+        },
+        "description": "Ravi hires Costume 15 now that Asha returned it. Expects HTTP 201 Created."
+      },
+      "response": []
+    },
+    {
+      "name": "5. Get hire details",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "pm.test(\"HTTP 200 for retrieving hire details\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Retrieve accurate hire record details\", function () {",
+              "    const jsonData = pm.response.json();",
+              "    pm.expect(jsonData.hire).to.be.an(\"object\");",
+              "    pm.expect(jsonData.hire.id).to.eql(Number(pm.collectionVariables.get(\"hireId\")));",
+              "    pm.expect(jsonData.hire.costumeId).to.eql(Number(pm.collectionVariables.get(\"costumeId\")));",
+              "    pm.expect(jsonData.hire.actorName).to.eql(\"Asha\");",
+              "    pm.expect(jsonData.hire.status).to.eql(\"returned\");",
+              "});"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/hires/{{hireId}}",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "hires",
+            "{{hireId}}"
+          ]
+        },
+        "description": "Fetch details of the returned hire record for Asha. Expects HTTP 200 OK."
+      },
+      "response": []
+    }
+  ]
+}
